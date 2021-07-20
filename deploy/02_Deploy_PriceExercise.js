@@ -7,10 +7,11 @@ module.exports = async ({
   const { deploy, log, get } = deployments
   const { deployer } = await getNamedAccounts()
   const chainId = await getChainId()
-  
   let linkTokenAddress
   let oracle
   let additionalMessage = ""
+  let btcUsdPriceFeedAddress = '0x6135b13325bfC4B00278B4abC5e20bbce2D6580e'
+
   //set log level to ignore non errors
   ethers.utils.Logger.setLogLevel(ethers.utils.Logger.levels.ERROR)
 
@@ -28,14 +29,13 @@ module.exports = async ({
   const fee = networkConfig[chainId]['fee']
   const networkName = networkConfig[chainId]['name']
 
-  const apiConsumer = await deploy('APIConsumer', {
+  const priceExercise = await deploy('PriceExercise', {
     from: deployer,
-    args: [oracle, jobId, fee, linkTokenAddress],
+    args: [oracle, jobId, fee, linkTokenAddress, btcUsdPriceFeedAddress],
     log: true
   })
 
-  log("Run API Consumer contract with following command:")
-  log("npx hardhat request-data --contract " + apiConsumer.address + " --network " + networkName)
+  log("Price Exercise contract deployed")
   log("----------------------------------------------------")
 }
-module.exports.tags = ['all', 'api', 'main']
+module.exports.tags = ['all', 'price', 'main']

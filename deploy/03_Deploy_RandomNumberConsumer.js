@@ -9,6 +9,7 @@ module.exports = async ({
   const { deploy, get, log } = deployments
   const { deployer } = await getNamedAccounts()
   const chainId = await getChainId()
+  
   let linkTokenAddress
   let vrfCoordinatorAddress
   let additionalMessage = ""
